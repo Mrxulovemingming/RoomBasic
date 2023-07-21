@@ -10,30 +10,23 @@ import kotlinx.coroutines.launch
 
 class WordViewModel(application: Application) :
     AndroidViewModel(application) {
-    lateinit var wordDao: WordDao
-    lateinit var allWords: LiveData<List<Word>>
+    private var allWords: LiveData<List<Word>>
+    var wordRepository: WordRepository = WordRepository(application)
 
     init {
-        wordDao = WordDatabase.getWordDataBase(application).getWordDao()
-        allWords = wordDao.getAllWords()
+        allWords = wordRepository.getAllWords()
     }
 
     fun addWord(vararg word: Word) {
-        CoroutineScope(Dispatchers.IO).launch {
-            wordDao.insertWords(*word)
-        }
+        wordRepository.addWord(*word)
     }
 
-    fun clearWords(){
-        CoroutineScope(Dispatchers.IO).launch {
-            wordDao.deleteAllWords()
-        }
+    fun clearWords() {
+        wordRepository.clearWords()
     }
 
-    fun updateWord(word: Word){
-        CoroutineScope(Dispatchers.IO).launch {
-            wordDao.updateWords(word)
-        }
+    fun updateWord(word: Word) {
+        wordRepository.updateWord(word)
     }
 
 }
