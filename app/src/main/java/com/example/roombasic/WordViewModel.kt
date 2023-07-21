@@ -12,6 +12,9 @@ class WordViewModel(application: Application) :
     AndroidViewModel(application) {
     private var allWords: LiveData<List<Word>>
     var wordRepository: WordRepository = WordRepository(application)
+    fun getAllWords(): LiveData<List<Word>> {
+        return allWords
+    }
 
     init {
         allWords = wordRepository.getAllWords()
