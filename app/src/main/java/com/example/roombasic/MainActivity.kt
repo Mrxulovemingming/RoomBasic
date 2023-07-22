@@ -31,13 +31,15 @@ class MainActivity : AppCompatActivity() {
         buttonQuery = findViewById(R.id.buttonQuery)
         buttonUpdate = findViewById(R.id.buttonUpdate)
         recyclerView = findViewById(R.id.recycleview)
-        wordAdapter = WordAdapter()
+        wordAdapter = WordAdapter(wordViewModel)
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = wordAdapter
         allWords = wordViewModel.getAllWords()
         allWords.observe(this) { // 通过 LiveData 的观察者模式来实现视图的及时更新
+            val temp = wordAdapter.itemCount
             wordAdapter.setAllWords(it)
-            wordAdapter.notifyDataSetChanged()
+            if (temp != it.size)
+                wordAdapter.notifyDataSetChanged()
         }
         buttonInsert.setOnClickListener {
             val word = Word("hello", "你好")
