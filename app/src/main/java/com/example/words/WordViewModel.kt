@@ -1,11 +1,8 @@
-package com.example.roombasic
+package com.example.words
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 
 class WordViewModel(application: Application) :
