@@ -13,6 +13,10 @@ class WordViewModel(application: Application) :
         return allWords
     }
 
+    fun setAllWords(words: LiveData<List<Word>>) {
+        allWords = words
+    }
+
     init {
         allWords = wordRepository.getAllWords()
     }
@@ -27,6 +31,10 @@ class WordViewModel(application: Application) :
 
     fun updateWord(word: Word) {
         wordRepository.updateWord(word)
+    }
+
+    fun getSearchWord(key: String): LiveData<List<Word>> {
+       return wordRepository.getSearchWord(key)
     }
 
 }

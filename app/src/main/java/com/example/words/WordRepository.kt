@@ -38,4 +38,8 @@ class WordRepository(context: Context) {
         }
     }
 
+    fun getSearchWord(key: String): LiveData<List<Word>> {
+        return wordDao.getSearchWords("%$key%")
+    }
+
 }

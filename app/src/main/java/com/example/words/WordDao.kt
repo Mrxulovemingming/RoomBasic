@@ -20,4 +20,6 @@ interface WordDao {
     @Query("SELECT * FROM WORD ORDER BY ID DESC")
     fun getAllWords(): LiveData<List<Word>>
 
+    @Query("SELECT * FROM WORD WHERE word LIKE :key ORDER BY ID DESC ")
+    fun getSearchWords(key:String): LiveData<List<Word>>
 }
