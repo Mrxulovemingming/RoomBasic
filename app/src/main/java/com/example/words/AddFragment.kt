@@ -65,7 +65,11 @@ class AddFragment : Fragment() {
             var chinese = editTextChinese.text.toString().trim()
             wordViewModel.addWord(Word(english, chinese))
             val navController = Navigation.findNavController(it)
-            navController.navigate(R.id.wordsFragment)
+            /*
+            * 如果 Navigate 到 WordsFragment ，里面的 RecycleView 是新的，也就不存在 itemInserted 动画
+            * 因此必须使用 NavigateUp
+            * */
+            navController.navigateUp()
         }
     }
 

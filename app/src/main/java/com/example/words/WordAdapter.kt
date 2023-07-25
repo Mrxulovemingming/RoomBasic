@@ -7,20 +7,28 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Switch
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
 class WordAdapter(private val wordViewModel: WordViewModel) :
-    RecyclerView.Adapter<WordAdapter.WordViewHolder>() {
-    private var allWords: List<Word> = ArrayList()
-    fun setAllWords(words: List<Word>) {
-        allWords = words
-    }
-
+    ListAdapter<Word, WordAdapter.WordViewHolder>(WordDiffCallback()) {
     class WordViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var textViewNumber: TextView = view.findViewById(R.id.textViewNumber)
         var textViewEnglish: TextView = view.findViewById(R.id.textViewEnglish)
         var textViewChinese: TextView = view.findViewById(R.id.textViewChinese)
         var switch: Switch = view.findViewById(R.id.showChinese)
+    }
+
+    class WordDiffCallback : DiffUtil.ItemCallback<Word>() {
+        override fun areItemsTheSame(oldItem: Word, newItem: Word): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: Word, newItem: Word): Boolean {
+            return oldItem == newItem
+        }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WordViewHolder {
@@ -35,7 +43,7 @@ class WordAdapter(private val wordViewModel: WordViewModel) :
             holder.itemView.context.startActivity(intent)
         }
         holder.switch.setOnCheckedChangeListener { _, isChecked ->
-            val word:Word = holder.itemView.getTag(R.id.word_for_view_holder) as Word
+            val word: Word = holder.itemView.getTag(R.id.word_for_view_holder) as Word
             if (isChecked) {
                 holder.textViewChinese.visibility = View.VISIBLE
                 word.showChinese = true
@@ -51,7 +59,7 @@ class WordAdapter(private val wordViewModel: WordViewModel) :
     }
 
     override fun onBindViewHolder(holder: WordViewHolder, position: Int) {
-        val word = allWords[position]
+        val word = getItem(position)
         holder.itemView.setTag(R.id.word_for_view_holder, word)// tag 可以放任何对象
         holder.textViewNumber.text = (position + 1).toString()
         holder.textViewEnglish.text = word.word
@@ -65,7 +73,13 @@ class WordAdapter(private val wordViewModel: WordViewModel) :
         }
     }
 
-    override fun getItemCount(): Int {
-        return allWords.size
+    // <editor-fold defaultstate="collapsed" desc="防止滑动到窗口外的控件到窗口内时，标签未更新">
+    override fun onViewAttachedToWindow(holder: WordViewHolder) {
+        super.onViewAttachedToWindow(holder)
+        holder.textViewNumber.text = (holder.adapterPosition + 1).toString()
     }
+    // </editor-fold>
+    
+
+
 }
