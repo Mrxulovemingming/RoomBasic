@@ -8,13 +8,9 @@ import androidx.lifecycle.LiveData
 class WordViewModel(application: Application) :
     AndroidViewModel(application) {
     private var allWords: LiveData<List<Word>>
-    var wordRepository: WordRepository = WordRepository(application)
+    private var wordRepository: WordRepository = WordRepository(application)
     fun getAllWords(): LiveData<List<Word>> {
         return allWords
-    }
-
-    fun setAllWords(words: LiveData<List<Word>>) {
-        allWords = words
     }
 
     init {
@@ -29,12 +25,16 @@ class WordViewModel(application: Application) :
         wordRepository.clearWords()
     }
 
-    fun updateWord(word: Word) {
-        wordRepository.updateWord(word)
+    fun updateWord(vararg word: Word) {
+        wordRepository.updateWord(*word)
     }
 
     fun getSearchWord(key: String): LiveData<List<Word>> {
-       return wordRepository.getSearchWord(key)
+        return wordRepository.getSearchWord(key)
+    }
+
+    fun deleteSingleWord(vararg word: Word) {
+        return wordRepository.deleteSingleWords(*word)
     }
 
 }

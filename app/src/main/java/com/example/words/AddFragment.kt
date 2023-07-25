@@ -16,14 +16,11 @@ import androidx.navigation.Navigation
 
 
 class AddFragment : Fragment() {
-    lateinit var wordViewModel: WordViewModel
+    private lateinit var wordViewModel: WordViewModel
     lateinit var buttonSubmit: Button
     lateinit var editTextEnglish: EditText
     lateinit var editTextChinese: EditText
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,8 +47,8 @@ class AddFragment : Fragment() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                var english = editTextEnglish.text.toString().trim()
-                var chinese = editTextChinese.text.toString().trim()
+                val english = editTextEnglish.text.toString().trim()
+                val chinese = editTextChinese.text.toString().trim()
                 buttonSubmit.isEnabled = (english.isNotEmpty() && chinese.isNotEmpty())
             }
 
@@ -61,8 +58,8 @@ class AddFragment : Fragment() {
         editTextEnglish.addTextChangedListener(textWatcher)
         editTextChinese.addTextChangedListener(textWatcher)
         buttonSubmit.setOnClickListener {
-            var english = editTextEnglish.text.toString().trim()
-            var chinese = editTextChinese.text.toString().trim()
+            val english = editTextEnglish.text.toString().trim()
+            val chinese = editTextChinese.text.toString().trim()
             wordViewModel.addWord(Word(english, chinese))
             val navController = Navigation.findNavController(it)
             /*

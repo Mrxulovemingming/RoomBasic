@@ -7,11 +7,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class WordRepository(context: Context) {
-    private lateinit var allWords: LiveData<List<Word>>
-    private lateinit var wordDao: WordDao
+    private var allWords: LiveData<List<Word>>
+    private var wordDao: WordDao
 
     init {
-        var wordDatabase = WordDatabase.getWordDataBase(context.applicationContext)
+        val wordDatabase = WordDatabase.getWordDataBase(context.applicationContext)
         wordDao = wordDatabase.getWordDao()
         allWords = wordDao.getAllWords()
     }
@@ -32,9 +32,9 @@ class WordRepository(context: Context) {
         }
     }
 
-    fun updateWord(word: Word) {
+    fun updateWord(vararg word: Word) {
         CoroutineScope(Dispatchers.IO).launch {
-            wordDao.updateWords(word)
+            wordDao.updateWords(*word)
         }
     }
 
@@ -42,4 +42,9 @@ class WordRepository(context: Context) {
         return wordDao.getSearchWords("%${key}%")
     }
 
+    fun deleteSingleWords(vararg word: Word) {
+        CoroutineScope(Dispatchers.IO).launch {
+            wordDao.deleteWords(*word)
+        }
+    }
 }
